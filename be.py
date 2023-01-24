@@ -68,7 +68,7 @@ def read_all_excel_sheets(filename: str) -> print:
 
 # xl.sheet_names  # see all sheet names
 
-# xl.parse("sheet_name")  # read a specific sheet to DataFrame
+# xl.parse("sheet_name")  # read a specific sheet to DataFrame
 
 # CSV FILES
 def read_all_csv_files(filename:str) -> list:
@@ -121,24 +121,6 @@ if __name__ == "main":
     # sys.path.insert(0, r"C:\Users\bunya\Desktop\BE_PC\3 -DataScience\1 - Codes\1 - Modül")
 
     # import be
-
-########################################################################################################################
-# Kategorik verilerin object type'ına çevrilmesi
-########################################################################################################################
-
-    """
-    final_data.select_dtypes(exclude=np.number).head()
-
-    final_data.select_dtypes(include=np.number).head()
-
-    rp.summary_cat(final_data.select_dtypes(exclude=np.number))
-
-    rp.summary_cont(final_data.select_dtypes(include=np.number))
-
-    final_data[["education", "prevalentStroke", "prevalentHyp", "diabetes", "TenYearCHD"]] = final_data[
-        ["education", "prevalentStroke", "prevalentHyp", "diabetes", "TenYearCHD"]].astype("object")
-
-    """
 
 ########################################################################################################################
 # Türkçe Karakter
