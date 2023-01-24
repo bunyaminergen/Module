@@ -110,12 +110,6 @@ def data_info(data, head = 5, tail = 5):
     print("#" * 25, "Quantiles", "#" *25)
     print(data.quantile([0, 0.05, 0.25, 0.95, 0.99, 1]).T, "\n")
 
-if __name__ == "main":
-
-    # sys.path.insert(0, r"C:\Users\bunya\Desktop\BE_PC\3 -DataScience\1 - Codes\1 - Modül")
-
-    # import be
-
 ########################################################################################################################
 # Türkçe Karakter
 # UnicodeEncodeError: 'charmap' codec can't encode characters
