@@ -1,10 +1,4 @@
 
-
-
-"""
-def imp_lib():
-"""
-
 import numpy as np
 import pandas as pd
 import researchpy as rp

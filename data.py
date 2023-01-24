@@ -4,13 +4,22 @@ import numpy as np
 import pandas as pd
 
 """
-Yapılandırılmamış veri temizliği ile uğraşırken kullanılabilecek fonksiyonları içerir
+This module contains functions that can be used when dealing with data cleaning for unstructured data 
 """
 
 def cat_to_var(data, cat_column, var_column, suffix: str = None, prefix: str = None, inplace: bool = False ):
 
     """
 
+    This function extracts the values of a categorical variable from another variable
+    and creates a new column with those values, corresponding to the index of each category in the original variable.
+    Let's say we have a variable called TEST that contains categorical variables representing test names.
+    These test values are also present in another variable. We want to create a new column,
+    where we assign the values from the other variable, corresponding to the index of each test name in the TEST variable.
+
+    You can use this function at that time.
+
+    You can test it before using it with the example below.
     # https://stackoverflow.com/questions/48027171/create-a-variable-in-a-pandas-dataframe-based-on-information-in-the-dataframe
 
     numpy where
