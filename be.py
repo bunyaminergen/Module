@@ -139,3 +139,9 @@ encoding="utf-8"
 encoding="utf8"
 
 """
+
+"""
+pip3 freeze > requirements.txt  # Python3
+pip freeze > requirements.txt  # Python2
+
+"""
