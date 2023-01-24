@@ -10,12 +10,6 @@ Yapılandırılmamış veri temizliği ile uğraşırken kullanılabilecek fonks
 def cat_to_var(data, cat_column, var_column, suffix: str = None, prefix: str = None, inplace: bool = False ):
 
     """
-    # bir değişkenin içindeki kategorik değişkenlerin diğer değişkendeki değerlerini alıp hepsini indexlerine göre
-    # yeni bir kolon oluşturarak o değerleri atar
-    # TESTADI adında bir değişkenimiz olsun içinde kategorik değişkenleri barındıran test isimleri olsun
-    # Bu teslerin değerleri de başka bir değişken içinde olsun
-    # biz de bütün bu TESTADI değişkenindeki bütün değişkenlerin diğer değişkende olan değerlerini
-    # ayrı bir değişken olarak indexlerine göre atamak istiyor olalım.
 
     # https://stackoverflow.com/questions/48027171/create-a-variable-in-a-pandas-dataframe-based-on-information-in-the-dataframe
 
