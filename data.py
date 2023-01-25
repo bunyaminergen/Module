@@ -8,7 +8,7 @@ import pandas as pd
 This module contains functions that can be used when dealing with data cleaning for unstructured data 
 """
 
-def cat_to_var(data, cat_column, var_column, suffix: str = None, prefix: str = None, inplace: bool = False ):
+def cat2var(data, cat_column, var_column, suffix: str = None, prefix: str = None, inplace: bool = False ):
 
     """
 
