@@ -46,8 +46,6 @@ def read_all_excel_sheets(filename: str) -> print:
         print(pd.read_excel(filename, sheet_name = i).head())
         print("#" * 100)
 
-    # file_list = read_all_excel_files(r"C:\Users\bunya\Desktop\sun4tech\HEIMDALL")
-
     # for i in file_list:
     # print("\n" * 2)
     # print("#" * 100)
@@ -111,8 +109,6 @@ def data_info(data, head = 5, tail = 5):
     print(data.quantile([0, 0.05, 0.25, 0.95, 0.99, 1]).T, "\n")
 
 ########################################################################################################################
-# Türkçe Karakter
-# UnicodeEncodeError: 'charmap' codec can't encode characters
 ########################################################################################################################
 
 """
