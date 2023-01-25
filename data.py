@@ -194,6 +194,80 @@ def rft2text(data, column, inplace: bool = False, isnull: bool = False, suffix: 
 
 ########################################################################################################################
 ########################################################################################################################
+# Binary Categorical Variable From Text
+########################################################################################################################
+########################################################################################################################
+
+def text2bincat(data, column, yes: str or list, no: str or list, inplace: bool = False, binary: bool = False, new_col: None = None, suffix: None = None, prefix: None = None):
+
+    """
+    The text2bincat function is used to search a text for the presence of certain keywords,
+    and return the result as a binary value (either "Yes" or "No"). It takes a dataframe, a column name,
+    a string or list of strings to match for "yes" values, a string or list of strings to match for "no" values,
+    and several optional parameters for handling the new column name, whether to modify the dataframe in place,
+    and whether to output binary values. The function creates a new column in the dataframe,
+    and then uses the str.contains method to find instances of the specified "yes" and "no" strings in the specified column,
+    and assigns "Yes" or "No" to the new column accordingly.
+    The output can also be set to return a binary value of True or False, if the binary parameter is set to True.
+
+    :param data:
+    :param column:
+    :param yes:
+    :param no:
+    :param inplace:
+    :param binary:
+    :param new_col:
+    :param suffix:
+    :param prefix:
+    :return:
+
+
+    Test and Exmaple:
+
+
+
+    """
+    # Create a copy of the dataframe if inplace is not set
+    if not inplace:
+        data = data.copy()
+
+    if new_col:
+        new_col = new_col
+    elif suffix:
+        new_col = data[column].name + suffix
+    elif prefix:
+        new_col = prefix + data[column].name
+    else:
+        new_col = text2bincat.__name__ + "_"
+
+    data[new_col] = np.nan
+
+    if isinstance(yes, str) and isinstance(no, str):
+
+        yes = yes.lower()
+        no = no.lower()
+
+        data.loc[data[column].str.lower().str.contains(yes, na=False), new_col] = "Yes"
+        data.loc[data[column].str.lower().str.contains(no, na=False), new_col] = "No"
+
+    elif isinstance(yes, list) and isinstance(no, list):
+
+        yes = [i.lower() for i in yes]
+        no = [i.lower() for i in no]
+
+        data.loc[data[column].str.lower().str.contains('|'.join(yes), na=False), new_col] = "Yes"
+        data.loc[data[column].str.lower().str.contains('|'.join(no), na=False), new_col] = "No"
+
+    else:
+        raise ValueError("yes and no parameter both are must be string or list")
+
+    if binary:
+        data[new_col] = data[new_col].map({"Yes": True, "No": False})
+
+    return data
+
+########################################################################################################################
+########################################################################################################################
 # Asynchronous programming
 ########################################################################################################################
 ########################################################################################################################
