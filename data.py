@@ -114,15 +114,93 @@ def del_repeated_last_occur_str(data, char, column, inplace: bool = False):
 
     return data
 
+
 ########################################################################################################################
 ########################################################################################################################
-# Async IO programming
+# Rich text format to text
 ########################################################################################################################
 ########################################################################################################################
 
-print(__name__)
+def rft2text(data, column, inplace: bool = False, isnull: bool = False, suffix: str = None, prefix: str = None, error: str = "strict"):
+
+    from striprtf.striprtf import rtf_to_text
+    # pip install striprtf
+    # https://pypi.org/project/striprtf/
+
+    """
+    To convert values in a column of a Dataframe that are in rich text format to plain text for each row, 
+    you can use this function and striprtf library.
+
+    Note: Creates a new column.
+    Note: it uses the striprtf library.
+    
+    :param data: dataframe as pandas dataframe
+    :param column: column name to apply as string
+    :param inplace: same as
+    :param isnull: if column has null values, should change with True
+    :param suffix: add suffix to new column name as string
+    :param prefix: add prefix to new column name as string
+    :param error: if you dont want to errors during to convers such as unicode, enter ignore as string
+                  but it may cause data loss
+                  How to handle encoding errors. Default is "strict", which throws an error. 
+                  Another option is "ignore" which, as the name says, ignores encoding errors.
+
+    :return: dataframe
+
+    library:
+    from striprtf.striprtf import rtf_to_text
+    # pip install striprtf
+    # https://pypi.org/project/striprtf/
+    """
+
+    '''
+    If you are receiving the error message "UnicodeEncodeError: 'charmap' codec can't encode character '\xdd' in position 0: character maps to <undefined>", it means that there is a character in the decode table that is not defined. In this example, it is "\xdd". This error indicates that the character in question is not supported by the 'charmap' codec.
+
+    To resolve this issue,
+    you can try adding the character in question to the algorithm/function that you are using, or you can edit the source file (cp1253.py) and add the character to it. My suggestion would be to add the character to the algorithm.
+    It would be better not to play around with the source file.
+    Or you can activate errors params from inside of rtf_to_text function but,
+    it may cause data loss
+
+    Also you may need to change encoding:
+
+    UnicodeEncodeError: 'charmap' codec can't encode characters
+
+    https://stackoverflow.com/questions/27092833/unicodeencodeerror-charmap-codec-cant-encode-characters
+
+    encoding="ISO-8859-1"
+    encoding="latin-1"
+    encoding="utf-8"
+    encoding="utf8"
+    '''
+
+    if inplace:
+        data = data.copy()
+
+    if isnull:
+        data[column].fillna("", inplace=True)
+
+    # Create the new column name
+    if suffix:
+        new_col = data[column].name + suffix
+    elif prefix:
+        new_col = prefix + data[column].name
+    else:
+        new_col = data[column].name + "_rft2text"
+
+    data[new_col] = data[column].apply(lambda x: rtf_to_text(x, errors=error))
+
+    return data
+
+########################################################################################################################
+########################################################################################################################
+# Asynchronous programming
+########################################################################################################################
+########################################################################################################################
 
 if __name__ == "main":
+
+    print(__name__)
 
     import threading as th
     import time
@@ -159,6 +237,10 @@ if __name__ == "main":
 ########################################################################################################################
 ########################################################################################################################
 
+if __name__ == "main":
+
+    from joblib import Parallel, delayed
+
 
 ########################################################################################################################
 ########################################################################################################################
@@ -178,6 +260,20 @@ if __name__ == "main":
 # Decorators
 ########################################################################################################################
 ########################################################################################################################
+
+
+
+
+
+########################################################################################################################
+########################################################################################################################
+# RFT (Rich Text Format) to Text
+########################################################################################################################
+########################################################################################################################
+
+from striprtf.striprtf import rtf_to_text
+# pip install striprtf
+# https://pypi.org/project/striprtf/
 
 
 
