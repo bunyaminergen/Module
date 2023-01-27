@@ -268,6 +268,73 @@ def text2bincat(data, column, yes: str or list, no: str or list, inplace: bool =
 
 ########################################################################################################################
 ########################################################################################################################
+# Multi Categorical Variable From Text
+########################################################################################################################
+########################################################################################################################
+
+def text2multicat(data,column,keyword,extra_stopwords: list = None, inplace: bool = False,threshold: int = 1, stopwords_lang:str = "turkish"):
+
+    import string
+
+    import nltk
+    # pip install nltk
+
+    from collections import Counter
+    # pip install collection
+
+    nltk.download('stopwords')
+
+    # inplace true değilse data kopyasını al
+    if not inplace:
+        data = data.copy()
+
+    # verilen keyword'ü texten çıkar ve her bir satıra keyword'ün olduğu cümleyi yeni bir kolonda ata.
+    # not: keyword'ün bitişi nokta olarak seçildi. Parametre olarak eklenecek.
+    # https://pandas.pydata.org/docs/reference/api/pandas.Series.str.extract.html
+    data[keyword] = data[column].str.extract(f'({keyword}.*?)[.]', expand=False)
+
+    # yeni kolondaki boş değerleri doldur. Splitte hata veriyor nan değerler.
+    data[keyword].fillna("", inplace=True)
+
+    # keyword'ün geçtiği cümledeki en çok tekrar eden kelimleri bulmak için cümleyi kelimelere böl.
+    split_strings = data[keyword].str.split(" ")
+
+    # en sık tekrar eden kelimeleri bul.
+    # not: collection kütüphanesi kullanıldı.
+    result = [word[0] for word in Counter([word for sublist in split_strings for word in sublist]).most_common() if word[0] not in keyword]
+
+    # sık tekrar eden kelimelerden stop word'leri çıkarmak için stopwords leri tanımla.
+    # extra_stopwords parametresi ile genişletilebilir.
+    # araya print ekledim çıkan sonuçta frekansı sık olan kelimeler görünecek büyük ihtimalle gürültü bir kelime illa çıkacaktır.
+    # extra_stopwords parametresine ekleyip tekrar çalıştırın.
+    stopwords = nltk.corpus.stopwords.words(stopwords_lang) + extra_stopwords if extra_stopwords else nltk.corpus.stopwords.words(stopwords_lang)
+
+    # stopwords leri çıkarma
+    result = nltk.word_tokenize(' '.join(result))
+    result = [word for word in result if word.lower() not in stopwords]
+
+    # noktalama işaretlerini çıkarma
+    result = [word for word in result if word not in string.punctuation]
+
+    # gürültü kelime varsa görmek için print
+    print(result)
+
+    # bir tane threshold varsa en sık tekrar eden kelimeyi cümlenin geçtiği satıra değer olarak atar.
+    if threshold == 1:
+        data[keyword].loc[list(data[data[keyword].str.contains((result[0]), na=False)].index)] = result[0]
+
+    # birden fazla threshold varsa girilen değer kadar en yüksek frekanslı tekrar eden kelimeleri
+    # cümlenin geçtiği satıra değer olarak atar.
+    elif threshold > 1:
+        for i in result[:threshold]:
+            print(i)
+            data[keyword].loc[list(data[data[keyword].str.contains((i), na=False)].index)] = i
+
+    # dataframe olarak döndürür
+    return data
+
+########################################################################################################################
+########################################################################################################################
 # Asynchronous programming
 ########################################################################################################################
 ########################################################################################################################
@@ -305,6 +372,7 @@ if __name__ == "main":
     th.Thread(target=sum, args=(10,10)).start()
     th.Thread(target=end, args=()).start()
 
+
 ########################################################################################################################
 ########################################################################################################################
 # Parallel Programming
@@ -314,7 +382,6 @@ if __name__ == "main":
 if __name__ == "main":
 
     from joblib import Parallel, delayed
-
 
 ########################################################################################################################
 ########################################################################################################################
