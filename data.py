@@ -335,6 +335,73 @@ def text2multicat(data,column,keyword,extra_stopwords: list = None, inplace: boo
 
 ########################################################################################################################
 ########################################################################################################################
+# Extract numbers from text column
+########################################################################################################################
+########################################################################################################################
+
+def extract_numbers_from_text(data: pd.DataFrame, column: str, col_range: int = 3, inplace: bool = False):
+
+    """
+
+    It finds the float values in a column containing string values, creates a new column with the words before it,
+    and assigns the float values to these new columns according to their indexes.
+
+    :param data: data as pandas dataframe
+    :param column: column name to implement
+    :param col_range: Determines how many words to take before the numeric value. Note: assigned as column name
+    :param inplace: same as others
+    :return: data as pandas dataframe
+
+    Test and example:
+
+    test_data = pd.DataFrame({           "id" : ["1","1","2","2","3"],
+                              "string_column" : ["Ne mutlu 'Türküm' diyene! - Mustafa Kemal Atatürk 1881",
+                                             "İstikbal göklerdedir! - Mustafa Kemal Atatürk 1938",
+                                             "Onlar korkularından denizi zincirleyecek kadar akıllı ise, biz gemileri karadan yürütebilecek kadar deliyiz! - Fatih Sultan Mehmet 1453",
+                                             "Size öyle bir vatan aldım ki; ebediyen sizin olacaktır! - Başbuğ Alp Arslan 1071",
+                                             "Ne kadar verimsiz olursa olsun toprak devletin temelidir; hiç kimseye verilemez! - Büyük Mete Han 234"
+                                             ]})
+
+    extract_numbers_from_text(test_data, "string_column")
+
+    """
+
+    if not inplace:
+        data = data.copy()
+
+    from nltk.tokenize import word_tokenize
+
+    for i, j in enumerate(data[column]):
+
+        tokens = word_tokenize(j)
+
+        for index, token in enumerate(tokens):
+
+            if token.replace(",", "").isdecimal():
+
+                col_name = " ".join(tokens[max(0, index - col_range): index]).strip()
+
+                if any(c.isdecimal() for c in col_name):
+                    continue
+
+                data.loc[i, col_name] = token
+
+    return data
+
+if __name__ == "main":
+
+    test_data = pd.DataFrame({"id": ["1", "1", "2", "2", "3"],
+                              "string_column": ["Ne mutlu 'Türküm' diyene! - Mustafa Kemal Atatürk 1881",
+                                                "İstikbal göklerdedir! - Mustafa Kemal Atatürk 1938",
+                                                "Onlar korkularından denizi zincirleyecek kadar akıllı ise, biz gemileri karadan yürütebilecek kadar deliyiz! - Fatih Sultan Mehmet 1453",
+                                                "Size öyle bir vatan aldım ki; ebediyen sizin olacaktır! - Başbuğ Alp Arslan 1071",
+                                                "Ne kadar verimsiz olursa olsun toprak devletin temelidir; hiç kimseye verilemez! - Büyük Mete Han 234"
+                                                ]})
+
+    extract_numbers_from_text(test_data, "string_column")
+
+########################################################################################################################
+########################################################################################################################
 # Asynchronous programming
 ########################################################################################################################
 ########################################################################################################################
