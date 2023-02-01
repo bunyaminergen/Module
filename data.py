@@ -4,6 +4,8 @@ import time
 import numpy as np
 import pandas as pd
 
+import be
+
 """
 This module contains functions that can be used when dealing with data cleaning for unstructured data 
 """
